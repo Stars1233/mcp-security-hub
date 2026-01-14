@@ -28,8 +28,19 @@ docker build -t maigret-mcp .
 
 ### Run
 
+This MCP uses Docker-in-Docker to run maigret. You must:
+1. Mount the Docker socket
+2. Create and mount a reports directory that's accessible to both containers
+
 ```bash
-docker run --rm -i maigret-mcp
+# Create reports directory on host
+mkdir -p /tmp/maigret-reports
+
+# Run with Docker socket and reports volume
+docker run --rm -i \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp/maigret-reports:/tmp/maigret-reports \
+  maigret-mcp
 ```
 
 ## Claude Desktop Configuration
@@ -41,7 +52,12 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "maigret": {
       "command": "docker",
-      "args": ["run", "--rm", "-i", "maigret-mcp"]
+      "args": [
+        "run", "--rm", "-i",
+        "-v", "/var/run/docker.sock:/var/run/docker.sock",
+        "-v", "/tmp/maigret-reports:/tmp/maigret-reports",
+        "maigret-mcp"
+      ]
     }
   }
 }

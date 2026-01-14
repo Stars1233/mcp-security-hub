@@ -24,10 +24,9 @@ RUN git clone --depth 1 https://github.com/BurtTheCoder/mcp-maigret.git /tmp/mcp
 # Install dependencies and build
 RUN npm ci && npm run build
 
-# Create reports directory
-RUN mkdir -p /app/reports
-
-ENV MAIGRET_REPORTS_DIR=/app/reports
+# Use /tmp/maigret-reports which must be mounted from host for Docker-in-Docker
+# The same path must exist on host and be mounted to this container
+ENV MAIGRET_REPORTS_DIR=/tmp/maigret-reports
 ENV NODE_ENV=production
 
 ENTRYPOINT ["/sbin/tini", "--"]

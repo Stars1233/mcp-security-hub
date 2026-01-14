@@ -27,7 +27,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Create wordlists directory
 RUN mkdir -p /app/wordlists
 
+# Create symlink for hashcat.exe (upstream code has hardcoded Windows path)
+RUN ln -s /usr/bin/hashcat /usr/bin/hashcat.exe
+
 ENV PYTHONUNBUFFERED=1
+ENV HASHCAT_PATH=/usr/bin/hashcat
 ENV HASHCAT_WORDLISTS_DIR=/app/wordlists
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
