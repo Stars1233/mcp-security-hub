@@ -8,14 +8,14 @@
 Production-ready, Dockerized MCP (Model Context Protocol) servers for offensive security tools. Enable AI assistants like Claude to perform security assessments, vulnerability scanning, and binary analysis.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/MCPs-16-brightgreen" alt="16 MCPs"/>
-  <img src="https://img.shields.io/badge/Tools-100+-orange" alt="100+ Tools"/>
+  <img src="https://img.shields.io/badge/MCPs-24-brightgreen" alt="24 MCPs"/>
+  <img src="https://img.shields.io/badge/Tools-150+-orange" alt="150+ Tools"/>
   <img src="https://img.shields.io/badge/Docker-Ready-blue" alt="Docker Ready"/>
 </p>
 
 ## Features
 
-- **16 MCP Servers** covering reconnaissance, web security, binary analysis, cloud security, and exploitation
+- **24 MCP Servers** covering reconnaissance, web security, binary analysis, cloud security, OSINT, Active Directory, and more
 - **100+ Security Tools** accessible via natural language through Claude or other MCP clients
 - **Production Hardened** - Non-root containers, minimal images, Trivy-scanned
 - **Docker Compose** orchestration for multi-tool workflows
@@ -76,7 +76,7 @@ Add to your Claude Desktop configuration:
 | [whatweb-mcp](./reconnaissance/whatweb-mcp) | 5 | Web technology fingerprinting and CMS detection |
 | [masscan-mcp](./reconnaissance/masscan-mcp) | 6 | High-speed port scanning for large networks |
 
-### Web Security (4 servers)
+### Web Security (5 servers)
 
 | Server | Tools | Description |
 |--------|-------|-------------|
@@ -84,8 +84,9 @@ Add to your Claude Desktop configuration:
 | [sqlmap-mcp](./web-security/sqlmap-mcp) | 8 | SQL injection detection and exploitation |
 | [nikto-mcp](./web-security/nikto-mcp) | - | Wrapper for [Nikto MCP](https://github.com/nittolese/nikto_mcp) web server scanner |
 | [ffuf-mcp](./web-security/ffuf-mcp) | 9 | Web fuzzing for directories, files, parameters, and virtual hosts |
+| [burp-mcp](./web-security/burp-mcp) | - | Wrapper for [official Burp Suite MCP](https://github.com/PortSwigger/mcp-server) |
 
-### Binary Analysis (4 servers)
+### Binary Analysis (6 servers)
 
 | Server | Tools | Description |
 |--------|-------|-------------|
@@ -93,6 +94,8 @@ Add to your Claude Desktop configuration:
 | [binwalk-mcp](./binary-analysis/binwalk-mcp) | 6 | Firmware analysis, signature scanning, extraction |
 | [yara-mcp](./binary-analysis/yara-mcp) | 7 | Pattern matching for malware classification |
 | [capa-mcp](./binary-analysis/capa-mcp) | 5 | Capability detection in executables |
+| [ghidra-mcp](./binary-analysis/ghidra-mcp) | - | Wrapper for [GhidraMCP](https://github.com/LaurieWired/GhidraMCP) - AI-powered reverse engineering |
+| [ida-mcp](./binary-analysis/ida-mcp) | - | Wrapper for [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) - IDA Pro integration |
 
 ### Cloud Security (2 servers)
 
@@ -106,6 +109,31 @@ Add to your Claude Desktop configuration:
 | Server | Tools | Description |
 |--------|-------|-------------|
 | [searchsploit-mcp](./exploitation/searchsploit-mcp) | 5 | Exploit-DB search and retrieval |
+
+### OSINT (2 servers)
+
+| Server | Tools | Description |
+|--------|-------|-------------|
+| [maigret-mcp](./osint/maigret-mcp) | - | Wrapper for [mcp-maigret](https://github.com/BurtTheCoder/mcp-maigret) - Username OSINT across 2500+ sites |
+| [dnstwist-mcp](./osint/dnstwist-mcp) | - | Wrapper for [mcp-dnstwist](https://github.com/BurtTheCoder/mcp-dnstwist) - Typosquatting/phishing detection |
+
+### Threat Intelligence (1 server)
+
+| Server | Tools | Description |
+|--------|-------|-------------|
+| [virustotal-mcp](./threat-intel/virustotal-mcp) | - | Wrapper for [mcp-virustotal](https://github.com/BurtTheCoder/mcp-virustotal) - Malware analysis and threat intel |
+
+### Active Directory (1 server)
+
+| Server | Tools | Description |
+|--------|-------|-------------|
+| [bloodhound-mcp](./active-directory/bloodhound-mcp) | 75+ | Wrapper for [BloodHound-MCP-AI](https://github.com/MorDavid/BloodHound-MCP-AI) - AD attack path analysis |
+
+### Password Cracking (1 server)
+
+| Server | Tools | Description |
+|--------|-------|-------------|
+| [hashcat-mcp](./password-cracking/hashcat-mcp) | - | Wrapper for [hashcat-mcp](https://github.com/MorDavid/hashcat-mcp) - Natural language hash cracking |
 
 ## Usage Examples
 
@@ -183,17 +211,29 @@ offensive-security-mcps/
 │   ├── nuclei-mcp/         # Vulnerability scanning
 │   ├── sqlmap-mcp/         # SQL injection
 │   ├── nikto-mcp/          # Web server scanning (wrapper)
-│   └── ffuf-mcp/           # Web fuzzing
+│   ├── ffuf-mcp/           # Web fuzzing
+│   └── burp-mcp/           # Burp Suite (wrapper)
 ├── binary-analysis/
 │   ├── radare2-mcp/        # Reverse engineering (wrapper)
 │   ├── binwalk-mcp/        # Firmware analysis
 │   ├── yara-mcp/           # Malware detection
-│   └── capa-mcp/           # Capability detection
+│   ├── capa-mcp/           # Capability detection
+│   ├── ghidra-mcp/         # Ghidra RE (wrapper)
+│   └── ida-mcp/            # IDA Pro (wrapper)
 ├── cloud-security/
-│   ├── trivy-mcp/          # Container scanning
+│   ├── trivy-mcp/          # Container scanning (wrapper)
 │   └── prowler-mcp/        # Cloud auditing
 ├── exploitation/
 │   └── searchsploit-mcp/   # Exploit database
+├── osint/
+│   ├── maigret-mcp/        # Username OSINT (wrapper)
+│   └── dnstwist-mcp/       # Typosquatting detection (wrapper)
+├── threat-intel/
+│   └── virustotal-mcp/     # Malware analysis (wrapper)
+├── active-directory/
+│   └── bloodhound-mcp/     # AD attack paths (wrapper)
+├── password-cracking/
+│   └── hashcat-mcp/        # Hash cracking (wrapper)
 ├── scripts/
 │   ├── setup.sh            # Quick setup
 │   └── healthcheck.sh      # Health verification
