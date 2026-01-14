@@ -2,15 +2,14 @@
 # Wrapper for nikto-mcp web server scanner
 # Based on: https://github.com/weldpua2008/nikto-mcp
 
-FROM python:3.12-alpine
+FROM node:20-alpine
 
 LABEL org.opencontainers.image.source="https://github.com/FuzzingLabs/offensive-security-mcps"
 LABEL org.opencontainers.image.description="Nikto MCP Server - Web server vulnerability scanner"
 LABEL org.opencontainers.image.licenses="MIT"
 
-# Security: Create non-root user
-RUN addgroup -g 1000 mcpuser && \
-    adduser -D -u 1000 -G mcpuser mcpuser
+# Security: Use existing node user (uid/gid 1000 in node:alpine)
+# The node:alpine image already has a 'node' user with uid/gid 1000
 
 # Install Nikto and dependencies
 RUN apk add --no-cache \
@@ -36,21 +35,21 @@ RUN git clone --depth 1 https://github.com/weldpua2008/nikto-mcp.git /tmp/nikto-
     cp -r /tmp/nikto-mcp/* /app/ && \
     rm -rf /tmp/nikto-mcp
 
-# Install Python dependencies
-RUN pip install --no-cache-dir mcp pydantic pydantic-settings
+# Install Node.js dependencies and build
+RUN npm ci && npm run build
 
 # Set ownership
-RUN mkdir -p /app/output && chown -R mcpuser:mcpuser /app /opt/nikto
+RUN mkdir -p /app/output && chown -R node:node /app /opt/nikto
 
-USER mcpuser
+USER node
 
 # Environment variables
 ENV NIKTO_OUTPUT_DIR=/app/output
 ENV NIKTO_TIMEOUT=600
-ENV PYTHONUNBUFFERED=1
+ENV NODE_ENV=production
 
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-    CMD pgrep -f "python.*server.py" > /dev/null || exit 1
+    CMD pgrep -f "node.*index" > /dev/null || exit 1
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["python", "server.py"]
+CMD ["node", "dist/index.js"]
