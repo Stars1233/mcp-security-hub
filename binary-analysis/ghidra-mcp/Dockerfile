@@ -24,8 +24,8 @@ RUN git clone --depth 1 https://github.com/LaurieWired/GhidraMCP.git /tmp/ghidra
     cp /tmp/ghidra-mcp/requirements.txt /app/ 2>/dev/null || true && \
     rm -rf /tmp/ghidra-mcp
 
-# Install MCP SDK
-RUN pip install --no-cache-dir mcp httpx
+# Install MCP SDK and dependencies
+RUN pip install --no-cache-dir mcp httpx requests
 
 ENV PYTHONUNBUFFERED=1
 ENV GHIDRA_SERVER_URL=http://host.docker.internal:18489
