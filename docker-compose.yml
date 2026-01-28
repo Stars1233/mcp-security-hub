@@ -461,35 +461,6 @@ services:
           memory: 512M
 
   # ===========================================================================
-  # Mobile Security
-  # ===========================================================================
-  mobsf-mcp:
-    build:
-      context: ./mobile-security/mobsf-mcp
-      dockerfile: Dockerfile
-    image: ghcr.io/fuzzinglabs/mobsf-mcp:latest
-    container_name: mobsf-mcp
-    environment:
-      - MOBSF_API_KEY=${MOBSF_API_KEY:-}
-      - MOBSF_URL=${MOBSF_URL:-http://mobsf:8000}
-    volumes:
-      - mobsf-uploads:/app/uploads
-    ports:
-      - "3008:3000"
-    networks:
-      - mcp-network
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 512M
-
-  # ===========================================================================
   # Cloud Security
   # ===========================================================================
   trivy-mcp:
@@ -600,10 +571,6 @@ volumes:
   yara-output:
     driver: local
   yara-samples:
-    driver: local
-
-  # MobSF
-  mobsf-uploads:
     driver: local
 
   # Trivy

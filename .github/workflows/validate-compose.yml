@@ -1,0 +1,60 @@
+# Validate Docker Compose Configuration
+#
+# This workflow ensures docker-compose.yml references only existing paths
+# and has valid syntax. Runs on PRs and pushes to catch issues early.
+
+name: Validate Docker Compose
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'docker-compose.yml'
+      - '**/Dockerfile'
+      - '.github/workflows/validate-compose.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'docker-compose.yml'
+      - '**/Dockerfile'
+      - '.github/workflows/validate-compose.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate docker-compose syntax
+        run: docker compose config --quiet
+
+      - name: Verify all build contexts exist
+        run: |
+          echo "Checking that all build contexts exist..."
+
+          # Extract build context paths from docker-compose.yml
+          contexts=$(grep -E "^\s+context:" docker-compose.yml | sed 's/.*context:\s*//' | tr -d "'\"")
+
+          failed=0
+          for ctx in $contexts; do
+            if [ ! -d "$ctx" ]; then
+              echo "❌ Missing build context: $ctx"
+              failed=1
+            else
+              echo "✅ Found: $ctx"
+            fi
+          done
+
+          if [ $failed -eq 1 ]; then
+            echo ""
+            echo "::error::Some build contexts are missing. Please remove non-existent services from docker-compose.yml"
+            exit 1
+          fi
+
+          echo ""
+          echo "All build contexts exist!"
+
+      - name: Dry-run build (validate Dockerfiles)
+        run: docker compose build --dry-run
