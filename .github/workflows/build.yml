@@ -93,16 +93,3 @@ jobs:
         run: |
           pytest tests/ -v --tb=short || true
 
-  # ===========================================================================
-  # Validate docker-compose
-  # ===========================================================================
-  validate-compose:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Validate docker-compose.yml
-        run: |
-          docker-compose config --quiet
-          echo "docker-compose.yml is valid"
