@@ -95,7 +95,7 @@ Add to your Claude Desktop configuration:
 | [binwalk-mcp](./binary-analysis/binwalk-mcp) | 6 | Firmware analysis, signature scanning, extraction |
 | [yara-mcp](./binary-analysis/yara-mcp) | 7 | Pattern matching for malware classification |
 | [capa-mcp](./binary-analysis/capa-mcp) | 5 | Capability detection in executables |
-| [ghidra-mcp](./binary-analysis/ghidra-mcp) | - | Wrapper for [GhidraMCP](https://github.com/LaurieWired/GhidraMCP) - AI-powered reverse engineering |
+| [ghidra-mcp](./binary-analysis/ghidra-mcp) | - | Wrapper for [pyghidra-mcp](https://github.com/clearbluejar/pyghidra-mcp) - Headless AI-powered reverse engineering |
 | [ida-mcp](./binary-analysis/ida-mcp) | - | Wrapper for [ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp) - IDA Pro integration |
 
 ### Cloud Security (2 servers)
@@ -219,7 +219,7 @@ mcp-security-hub/
 │   ├── binwalk-mcp/        # Firmware analysis
 │   ├── yara-mcp/           # Malware detection
 │   ├── capa-mcp/           # Capability detection
-│   ├── ghidra-mcp/         # Ghidra RE (wrapper)
+│   ├── ghidra-mcp/         # Ghidra RE - pyghidra-mcp (headless)
 │   └── ida-mcp/            # IDA Pro (wrapper)
 ├── cloud-security/
 │   ├── trivy-mcp/          # Container scanning (wrapper)
