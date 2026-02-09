@@ -178,6 +178,10 @@ def generate_site():
         mcp_details = parse_mcp_readme(readme_path)
         server.update(mcp_details)
 
+        # Set tools_count from actual tools list if not already set
+        if server.get('tools') and not server.get('tools_count'):
+            server['tools_count'] = len(server['tools'])
+
     # Group by category
     categories = {}
     for server in servers:
@@ -212,7 +216,7 @@ def generate_site():
         categories=categories,
         category_info=category_info,
         total_servers=len(servers),
-        total_tools=sum(int(re.sub(r'[^\d]', '', s.get('tools_count') or '0') or 0) for s in servers if s.get('tools_count')),
+        total_tools=sum(int(re.sub(r'[^\d]', '', str(s.get('tools_count') or '0')) or 0) for s in servers if s.get('tools_count')),
     )
 
     # Create output directory
@@ -236,13 +240,19 @@ def generate_site():
         (OUTPUT_DIR / 'js' / 'app.js').write_text(js_src.read_text())
         print(f"  Copied: {OUTPUT_DIR / 'js' / 'app.js'}")
 
+    # Copy favicon
+    favicon_src = TEMPLATES_DIR / 'favicon.svg'
+    if favicon_src.exists():
+        (OUTPUT_DIR / 'favicon.svg').write_text(favicon_src.read_text())
+        print(f"  Copied: {OUTPUT_DIR / 'favicon.svg'}")
+
     # Generate JSON data for API access
     json_data = {
         'servers': servers,
         'categories': list(categories.keys()),
         'stats': {
             'total_servers': len(servers),
-            'total_tools': sum(int(re.sub(r'[^\d]', '', s.get('tools_count') or '0') or 0) for s in servers if s.get('tools_count')),
+            'total_tools': sum(int(re.sub(r'[^\d]', '', str(s.get('tools_count') or '0')) or 0) for s in servers if s.get('tools_count')),
         }
     }
     (OUTPUT_DIR / 'data.json').write_text(json.dumps(json_data, indent=2))
