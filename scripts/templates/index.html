@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCP Security Hub - Offensive Security MCP Servers</title>
     <meta name="description" content="Production-ready MCP servers for offensive security tools. {{ total_servers }} servers with {{ total_tools }}+ security tools.">
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Custom styles -->
+    <!-- FuzzForge Design System -->
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
-    <header class="bg-dark border-bottom border-secondary py-4">
+    <header class="header py-5">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="display-5 fw-bold mb-2">
-                        <i class="bi bi-shield-lock me-2"></i>MCP Security Hub
-                    </h1>
-                    <p class="lead text-secondary mb-0">
-                        Production-ready MCP servers for offensive security tools
-                    </p>
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="logo-icon">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+                    <div>
+                        <h1 style="font-size: 1.75rem; font-weight: 700; margin: 0;">MCP Security Hub</h1>
+                        <p style="color: var(--text-secondary); margin: 0.25rem 0 0 0; font-size: 0.95rem;">
+                            Production-ready MCP servers for offensive security tools
+                        </p>
+                    </div>
                 </div>
-                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                    <a href="https://github.com/FuzzingLabs/mcp-security-hub" class="btn btn-outline-light me-2">
-                        <i class="bi bi-github me-1"></i> GitHub
+                <div class="flex gap-2">
+                    <a href="https://github.com/FuzzingLabs/mcp-security-hub" class="btn btn-primary">
+                        <i class="bi bi-github"></i> GitHub
                     </a>
-                    <a href="data.json" class="btn btn-outline-secondary">
-                        <i class="bi bi-filetype-json me-1"></i> API
+                    <a href="data.json" class="btn btn-ghost">
+                        <i class="bi bi-filetype-json"></i> API
                     </a>
                 </div>
             </div>
@@ -39,47 +41,43 @@
     </header>
 
     <!-- Stats -->
-    <section class="bg-dark py-4">
+    <section class="stats-section py-5">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-4">
-                    <div class="display-6 fw-bold text-primary">{{ total_servers }}</div>
-                    <div class="text-secondary">MCP Servers</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                <div class="stat-card">
+                    <div class="stat-value">{{ total_servers }}</div>
+                    <div class="stat-label">MCP Servers</div>
                 </div>
-                <div class="col-4">
-                    <div class="display-6 fw-bold text-success">{{ total_tools }}+</div>
-                    <div class="text-secondary">Security Tools</div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ total_tools }}+</div>
+                    <div class="stat-label">Security Tools</div>
                 </div>
-                <div class="col-4">
-                    <div class="display-6 fw-bold text-info">{{ categories|length }}</div>
-                    <div class="text-secondary">Categories</div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ categories|length }}</div>
+                    <div class="stat-label">Categories</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Search and Filters -->
-    <section class="bg-body-tertiary py-4 sticky-top">
+    <section class="filter-section py-4" style="position: sticky; top: 0; z-index: 100;">
         <div class="container">
-            <div class="row g-3 align-items-center">
-                <div class="col-lg-4">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" id="searchInput" class="form-control" placeholder="Search servers, tools...">
-                    </div>
+            <div class="flex items-center gap-4 flex-wrap">
+                <div style="position: relative; flex: 0 0 300px;">
+                    <i class="bi bi-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search servers, tools...">
                 </div>
-                <div class="col-lg-8">
-                    <div class="d-flex flex-wrap gap-2" id="categoryFilters">
-                        <button class="btn btn-sm btn-primary active" data-category="all">
-                            All <span class="badge bg-light text-dark ms-1">{{ total_servers }}</span>
-                        </button>
-                        {% for category, servers_list in categories.items() %}
-                        <button class="btn btn-sm btn-outline-secondary" data-category="{{ category }}" style="--cat-color: {{ category_info.get(category, {}).get('color', '#6c757d') }}">
-                            <i class="bi {{ category_info.get(category, {}).get('icon', 'bi-folder') }} me-1"></i>
-                            {{ category }} <span class="badge bg-secondary ms-1">{{ servers_list|length }}</span>
-                        </button>
-                        {% endfor %}
-                    </div>
+                <div class="flex flex-wrap gap-2" id="categoryFilters">
+                    <button class="filter-btn active" data-category="all">
+                        All <span class="badge">{{ total_servers }}</span>
+                    </button>
+                    {% for category, servers_list in categories.items() %}
+                    <button class="filter-btn" data-category="{{ category }}">
+                        <i class="bi {{ category_info.get(category, {}).get('icon', 'bi-folder') }}"></i>
+                        {{ category }} <span class="badge">{{ servers_list|length }}</span>
+                    </button>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -90,62 +88,62 @@
         <div class="container">
             {% for category, servers_list in categories.items() %}
             <section class="mb-5 category-section" data-category="{{ category }}">
-                <h2 class="h4 mb-4 d-flex align-items-center">
-                    <i class="bi {{ category_info.get(category, {}).get('icon', 'bi-folder') }} me-2" style="color: {{ category_info.get(category, {}).get('color', '#6c757d') }}"></i>
-                    {{ category }}
-                    <span class="badge bg-secondary ms-2">{{ servers_list|length }}</span>
-                </h2>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="bi {{ category_info.get(category, {}).get('icon', 'bi-folder') }}"></i>
+                    </div>
+                    <h2 class="category-title">{{ category }}</h2>
+                    <span class="category-count">{{ servers_list|length }}</span>
+                </div>
 
-                <div class="row g-4">
+                <div class="server-grid">
                     {% for server in servers_list %}
-                    <div class="col-lg-6 col-xl-4 server-card" data-name="{{ server.name }}" data-category="{{ category }}" data-description="{{ server.description }}">
-                        <div class="card h-100 bg-body-secondary border-0 shadow-sm">
-                            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-start">
-                                <div>
-                                    <h5 class="card-title mb-1">
-                                        <a href="https://github.com/FuzzingLabs/mcp-security-hub/tree/master/{{ server.path }}" class="text-decoration-none text-light">
-                                            {{ server.name }}
-                                        </a>
-                                    </h5>
+                    <div class="server-card" data-name="{{ server.name }}" data-category="{{ category }}" data-description="{{ server.description }}">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">
+                                    <a href="https://github.com/FuzzingLabs/mcp-security-hub/tree/master/{{ server.path }}">
+                                        {{ server.name }}
+                                    </a>
+                                </h3>
+                                <div class="flex gap-2" style="margin-top: 0.5rem;">
                                     {% if server.is_wrapper %}
-                                    <span class="badge bg-info text-dark">Wrapper</span>
+                                    <span class="badge badge-wrapper">Wrapper</span>
                                     {% endif %}
                                     {% if server.tools_count %}
-                                    <span class="badge bg-success">{{ server.tools_count }} tools</span>
+                                    <span class="badge badge-tools">{{ server.tools_count }} tools</span>
                                     {% endif %}
                                 </div>
-                                {% if server.external_url %}
-                                <a href="{{ server.external_url }}" class="btn btn-sm btn-outline-secondary" target="_blank" title="Upstream repo">
-                                    <i class="bi bi-box-arrow-up-right"></i>
-                                </a>
-                                {% endif %}
                             </div>
-                            <div class="card-body">
-                                <p class="card-text text-secondary">{{ server.description }}</p>
+                            {% if server.external_url %}
+                            <a href="{{ server.external_url }}" class="btn btn-ghost" target="_blank" title="Upstream repo" style="padding: 0.375rem 0.5rem;">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <p class="card-description">{{ server.description }}</p>
 
-                                {% if server.tools %}
-                                <div class="mb-3">
-                                    <small class="text-muted">Tools:</small>
-                                    <div class="d-flex flex-wrap gap-1 mt-1">
-                                        {% for tool in server.tools[:6] %}
-                                        <code class="badge bg-dark">{{ tool.name }}</code>
-                                        {% endfor %}
-                                        {% if server.tools|length > 6 %}
-                                        <span class="badge bg-secondary">+{{ server.tools|length - 6 }} more</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
+                            {% if server.tools %}
+                            <div class="tool-tags">
+                                {% for tool in server.tools[:6] %}
+                                <span class="tool-tag">{{ tool.name }}</span>
+                                {% endfor %}
+                                {% if server.tools|length > 6 %}
+                                <span class="tool-tag" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">+{{ server.tools|length - 6 }} more</span>
                                 {% endif %}
                             </div>
-                            <div class="card-footer bg-transparent border-top border-secondary">
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-outline-light flex-grow-1 copy-btn" data-command="docker run -i --rm {{ server.name }}:latest">
-                                        <i class="bi bi-clipboard me-1"></i> Docker Run
-                                    </button>
-                                    <a href="https://github.com/FuzzingLabs/mcp-security-hub/tree/master/{{ server.path }}" class="btn btn-sm btn-outline-secondary">
-                                        <i class="bi bi-file-text"></i>
-                                    </a>
-                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            <div class="flex items-center gap-2">
+                                <code class="docker-cmd">docker run -i --rm {{ server.name }}:latest</code>
+                                <button class="btn btn-ghost copy-btn" data-command="docker run -i --rm {{ server.name }}:latest" title="Copy command" style="padding: 0.375rem 0.5rem;">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <a href="https://github.com/FuzzingLabs/mcp-security-hub/tree/master/{{ server.path }}" class="btn btn-ghost" title="View README" style="padding: 0.375rem 0.5rem;">
+                                    <i class="bi bi-file-text"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -157,33 +155,26 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark border-top border-secondary py-4">
+    <footer class="footer py-4">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    <p class="mb-0 text-secondary">
-                        Maintained by <a href="https://fuzzinglabs.com" class="text-light">FuzzingLabs</a>
-                    </p>
-                </div>
-                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
-                    <a href="https://github.com/FuzzingLabs/mcp-security-hub/blob/master/LICENSE" class="text-secondary me-3">MIT License</a>
-                    <a href="https://modelcontextprotocol.io/" class="text-secondary">MCP Protocol</a>
+            <div class="flex items-center justify-between flex-wrap gap-3">
+                <p style="margin: 0; color: var(--text-secondary);">
+                    Maintained by <a href="https://fuzzinglabs.com">FuzzingLabs</a>
+                </p>
+                <div class="flex gap-4">
+                    <a href="https://github.com/FuzzingLabs/mcp-security-hub/blob/master/LICENSE">MIT License</a>
+                    <a href="https://modelcontextprotocol.io/">MCP Protocol</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Toast for copy feedback -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="copyToast" class="toast" role="alert">
-            <div class="toast-body bg-success text-white rounded">
-                <i class="bi bi-check-circle me-2"></i> Copied to clipboard!
-            </div>
+    <div class="toast-container">
+        <div id="copyToast" class="toast">
+            <i class="bi bi-check-circle"></i> Copied to clipboard!
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
     <script src="js/app.js"></script>

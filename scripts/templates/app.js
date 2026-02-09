@@ -1,5 +1,6 @@
 /**
  * MCP Security Hub - Interactive functionality
+ * FuzzForge Design System
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -14,8 +15,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let activeCategory = 'all';
     let searchQuery = '';
 
-    // Initialize Bootstrap toast
-    const toast = new bootstrap.Toast(copyToast, { delay: 2000 });
+    /**
+     * Show toast notification
+     */
+    function showToast() {
+        copyToast.classList.add('show');
+        setTimeout(() => {
+            copyToast.classList.remove('show');
+        }, 2000);
+    }
 
     /**
      * Filter servers based on category and search query
@@ -41,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show/hide category sections
         categorySections.forEach(section => {
-            const category = section.dataset.category;
             const visibleCards = section.querySelectorAll('.server-card:not(.hidden)');
 
             if (visibleCards.length === 0) {
@@ -60,16 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
      * Handle category filter clicks
      */
     categoryFilters.addEventListener('click', function(e) {
-        const button = e.target.closest('button');
+        const button = e.target.closest('.filter-btn');
         if (!button) return;
 
         // Update active state
-        categoryFilters.querySelectorAll('.btn').forEach(btn => {
-            btn.classList.remove('active', 'btn-primary');
-            btn.classList.add('btn-outline-secondary');
+        categoryFilters.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
         });
-        button.classList.add('active', 'btn-primary');
-        button.classList.remove('btn-outline-secondary');
+        button.classList.add('active');
 
         // Set active category
         activeCategory = button.dataset.category;
@@ -96,16 +101,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Visual feedback
                 this.classList.add('copied');
-                const originalHTML = this.innerHTML;
-                this.innerHTML = '<i class="bi bi-check me-1"></i> Copied!';
+                const icon = this.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('bi-clipboard');
+                    icon.classList.add('bi-check');
+                }
 
                 // Show toast
-                toast.show();
+                showToast();
 
                 // Reset button after delay
                 setTimeout(() => {
                     this.classList.remove('copied');
-                    this.innerHTML = originalHTML;
+                    if (icon) {
+                        icon.classList.remove('bi-check');
+                        icon.classList.add('bi-clipboard');
+                    }
                 }, 1500);
             } catch (err) {
                 console.error('Failed to copy:', err);
@@ -116,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
+                showToast();
             }
         });
     });
