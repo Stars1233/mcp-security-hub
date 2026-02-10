@@ -34,8 +34,8 @@ services:
     cap_drop:
       - ALL
     cap_add:
-      - NET_RAW      # Required for raw socket scanning
-      - NET_ADMIN    # Required for some scan types
+      - NET_RAW # Required for raw socket scanning
+      - NET_ADMIN # Required for some scan types
     deploy:
       resources:
         limits:
@@ -143,7 +143,7 @@ services:
     cap_drop:
       - ALL
     cap_add:
-      - NET_RAW      # Required for raw socket scanning
+      - NET_RAW # Required for raw socket scanning
     deploy:
       resources:
         limits:
@@ -494,7 +494,7 @@ services:
     container_name: solazy-mcp
 
     restart: "no"
-    profiles: ["on-demand"]
+    profiles: [ "on-demand" ]
 
     environment:
       - SOLAZY_OUTPUT_DIR=/app/output
@@ -525,6 +525,41 @@ services:
           cpus: '0.5'
           memory: 512M
 
+  medusa-mcp:
+    build:
+      context: ./blockchain/medusa-mcp
+      dockerfile: Dockerfile
+    image: medusa-mcp:latest
+    container_name: medusa-mcp
+
+    restart: "no"
+    profiles: [ "on-demand" ]
+
+    environment:
+      - MEDUSA_OUTPUT_DIR=/app/output
+      - MEDUSA_UPLOAD_DIR=/app/uploads
+      - MEDUSA_TIMEOUT=${MEDUSA_TIMEOUT:-600}
+
+    volumes:
+      - medusa-output:/app/output
+      - medusa-uploads:/app/uploads
+
+    networks:
+      - mcp-network
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   # ===========================================================================
   # Cloud Security
@@ -541,7 +576,7 @@ services:
     volumes:
       - trivy-output:/app/output
       - trivy-cache:/home/mcpuser/.cache/trivy
-      - /var/run/docker.sock:/var/run/docker.sock:ro  # For local image scanning
+      - /var/run/docker.sock:/var/run/docker.sock:ro # For local image scanning
     ports:
       - "3011:3000"
     networks:
@@ -861,4 +896,10 @@ volumes:
   solazy-output:
     driver: local
   solazy-uploads:
+    driver: local
+
+  # Medusa
+  medusa-output:
+    driver: local
+  medusa-uploads:
     driver: local
