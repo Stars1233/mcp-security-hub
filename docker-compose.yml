@@ -484,6 +484,49 @@ services:
           memory: 512M
 
   # ===========================================================================
+  # Blockchain Security
+  # ===========================================================================
+  solazy-mcp:
+    build:
+      context: ./blockchain/solazy-mcp
+      dockerfile: Dockerfile
+    image: solazy-mcp:latest
+    container_name: solazy-mcp
+
+    restart: "no"
+    profiles: ["on-demand"]
+
+    environment:
+      - SOLAZY_OUTPUT_DIR=/app/output
+      - SOLAZY_UPLOAD_DIR=/app/uploads
+      - SOLAZY_TIMEOUT=${SOLAZY_TIMEOUT:-300}
+      - SOLAZY_MAX_CONCURRENT=${SOLAZY_MAX_CONCURRENT:-2}
+      - SOLAZY_MAX_FILE_SIZE=${SOLAZY_MAX_FILE_SIZE:-104857600}
+      - SOLAZY_ALLOW_ANY_PATH=${SOLAZY_ALLOW_ANY_PATH:-0}
+
+    volumes:
+      - solazy-output:/app/output
+      - solazy-uploads:/app/uploads
+
+    networks:
+      - mcp-network
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+
+  # ===========================================================================
   # Cloud Security
   # ===========================================================================
   trivy-mcp:
@@ -812,4 +855,10 @@ volumes:
 
   # Gitleaks
   gitleaks-output:
+    driver: local
+
+  # sol-azy
+  solazy-output:
+    driver: local
+  solazy-uploads:
     driver: local

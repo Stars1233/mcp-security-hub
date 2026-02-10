@@ -33,6 +33,7 @@ MCPS=(
     "cloud-security/trivy-mcp"
     "cloud-security/prowler-mcp"
     "exploitation/searchsploit-mcp"
+    "blockchain/solazy-mcp"
 )
 
 PASSED=0
