@@ -142,7 +142,7 @@ For project-level config, copy `.mcp.json` to your project root. See [examples/]
 
 | Server | Tools | Description |
 |--------|-------|-------------|
-| [dharma-mcp](./fuzzing/dharma-mcp) | 1 | Grammar-based test case generation |
+| [dharma-mcp](./fuzzing/dharma-mcp) | 2 | Grammar-based test case generation |
 
 ### OSINT (2 servers)
 

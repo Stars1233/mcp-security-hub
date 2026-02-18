@@ -8,9 +8,10 @@ Transport: **stdio** (no HTTP server).
 
 ## Tools
 
-| Tool                     | Description                                      |
-|--------------------------|--------------------------------------------------|
-| `dharma_generate`        | Generate test cases using a Dharma grammar file. |
+| Tool                     | Description                                                                                     |
+|--------------------------|-------------------------------------------------------------------------------------------------|
+| `dharma_generate`        | Generate test cases using a Dharma grammar file located on the server.                          |
+| `dharma_generate_custom` | Generate test cases from a custom Dharma grammar provided as a string. Useful for dynamically generated grammars or quick testing without saving files. |
 
 ---
 
@@ -73,10 +74,16 @@ To integrate with Claude Desktop, add the following to your configuration:
 
 ## Example Usage
 
-### Generate Test Cases
+### Generate Test Cases from a File
 
 ```plaintext
-Generate 10 json test cases using the grammar at /app/grammars/json.dg
+Generate 10 test cases using the grammar at /app/grammars/json.dg
+```
+
+### Generate Test Cases from a Custom Grammar
+
+```plaintext
+Run dharma_generate_custom with grammar_content="<grammar content here>" and count=5
 ```
 
 ### With Explicit Output

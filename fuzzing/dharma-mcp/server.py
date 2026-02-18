@@ -8,7 +8,9 @@ A Model Context Protocol server for Dharma grammar-based fuzzing.
 import asyncio
 import json
 import logging
+import os
 import shlex
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -81,7 +83,7 @@ async def list_tools() -> list[Tool]:
     return [
         Tool(
             name="dharma_generate",
-            description="Generate test cases using a Dharma grammar file.",
+            description="Generate test cases using a Dharma grammar file located on the server.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -98,12 +100,32 @@ async def list_tools() -> list[Tool]:
                 "required": ["grammar_path"]
             },
         ),
+        Tool(
+            name="dharma_generate_custom",
+            description="Generate test cases from a custom Dharma grammar provided as a string. Useful for dynamically generated grammars or quick testing without saving files.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "grammar_content": {
+                        "type": "string",
+                        "description": "The full content of the Dharma grammar file (plain text)."
+                    },
+                    "count": {
+                        "type": "integer",
+                        "description": "Number of test cases to generate.",
+                        "default": 1
+                    }
+                },
+                "required": ["grammar_content"]
+            },
+        ),
     ]
 
 
 @app.call_tool()
 async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
     """Handle tool calls."""
+    
     if name == "dharma_generate":
         grammar_path = arguments.get("grammar_path")
         count = arguments.get("count", 1)
@@ -120,6 +142,43 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
              return [TextContent(type="text", text=f"Error: {stderr}")]
 
         return [TextContent(type="text", text=stdout)]
+
+    elif name == "dharma_generate_custom":
+        grammar_content = arguments.get("grammar_content")
+        count = arguments.get("count", 1)
+
+        if not grammar_content:
+            return [TextContent(type="text", text="Error: 'grammar_content' is required.")]
+
+        # Create a temporary file to store the custom grammar
+        tmp_file_path = None
+        try:
+            # Create a temp file with .dg suffix so dharma recognizes it
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.dg', delete=False) as tmp:
+                tmp.write(grammar_content)
+                tmp_file_path = tmp.name
+            
+            logger.info(f"Generated temporary grammar file: {tmp_file_path}")
+
+            # Run dharma using the temp file
+            stdout, stderr = await run_dharma(tmp_file_path, count)
+
+            if stderr and "error" in stderr.lower():
+                return [TextContent(type="text", text=f"Error: {stderr}")]
+            
+            if not stdout and stderr:
+                 return [TextContent(type="text", text=f"Error: {stderr}")]
+
+            return [TextContent(type="text", text=stdout)]
+
+        except Exception as e:
+            logger.exception("Error processing custom grammar")
+            return [TextContent(type="text", text=f"Error processing custom grammar: {str(e)}")]
+        finally:
+            # Clean up the temporary file
+            if tmp_file_path and os.path.exists(tmp_file_path):
+                os.unlink(tmp_file_path)
+                logger.info(f"Cleaned up temporary file: {tmp_file_path}")
 
     return [TextContent(type="text", text=f"Unknown tool: {name}")]
 
