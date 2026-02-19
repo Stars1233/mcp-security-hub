@@ -138,6 +138,11 @@ For project-level config, copy `.mcp.json` to your project root. See [examples/]
 |--------|-------|-------------|
 | [searchsploit-mcp](./exploitation/searchsploit-mcp) | 5 | Exploit-DB search and retrieval |
 
+### Fuzzing (1 server)
+   Server | Tools | Description |
+ |--------|-------|-------------|
+ | [boofuzz-mcp](./fuzzing/boofuzz-mcp) | 4 | Network protocol fuzzing using Boofuzz |
+
 ### OSINT (2 servers)
 
 | Server | Tools | Description |
