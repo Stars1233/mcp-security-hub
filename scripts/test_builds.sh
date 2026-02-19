@@ -34,7 +34,8 @@ MCPS=(
     "cloud-security/prowler-mcp"
     "exploitation/searchsploit-mcp"
     "blockchain/daml-viewer-mcp"
-    "blockchain/solazy-mcp"
+    "blockchain/solazy-mcp",
+    "fuzzing/dharma-mcp"
 )
 
 PASSED=0
