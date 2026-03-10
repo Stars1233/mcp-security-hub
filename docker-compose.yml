@@ -785,7 +785,7 @@ services:
     image: semgrep-mcp:latest
     container_name: semgrep-mcp
     ports:
-      - "3024:3000"
+      - "3030:3000"
     networks:
       - mcp-network
     restart: unless-stopped
@@ -895,6 +895,173 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
+
+  # ===========================================================================
+  # Web Security (additional)
+  # ===========================================================================
+  burp-mcp:
+    build:
+      context: ./web-security/burp-mcp
+      dockerfile: Dockerfile
+    image: burp-mcp:latest
+    container_name: burp-mcp
+    ports:
+      - "3031:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # ===========================================================================
+  # Binary Analysis (additional)
+  # ===========================================================================
+  ida-mcp:
+    build:
+      context: ./binary-analysis/ida-mcp
+      dockerfile: Dockerfile
+    image: ida-mcp:latest
+    container_name: ida-mcp
+    ports:
+      - "3032:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  # ===========================================================================
+  # OSINT
+  # ===========================================================================
+  maigret-mcp:
+    build:
+      context: ./osint/maigret-mcp
+      dockerfile: Dockerfile
+    image: maigret-mcp:latest
+    container_name: maigret-mcp
+    ports:
+      - "3033:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  dnstwist-mcp:
+    build:
+      context: ./osint/dnstwist-mcp
+      dockerfile: Dockerfile
+    image: dnstwist-mcp:latest
+    container_name: dnstwist-mcp
+    ports:
+      - "3034:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  # ===========================================================================
+  # Threat Intelligence (additional)
+  # ===========================================================================
+  virustotal-mcp:
+    build:
+      context: ./threat-intel/virustotal-mcp
+      dockerfile: Dockerfile
+    image: virustotal-mcp:latest
+    container_name: virustotal-mcp
+    environment:
+      - VIRUSTOTAL_API_KEY=${VIRUSTOTAL_API_KEY:-}
+    ports:
+      - "3035:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # ===========================================================================
+  # Active Directory
+  # ===========================================================================
+  bloodhound-mcp:
+    build:
+      context: ./active-directory/bloodhound-mcp
+      dockerfile: Dockerfile
+    image: bloodhound-mcp:latest
+    container_name: bloodhound-mcp
+    ports:
+      - "3036:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  # ===========================================================================
+  # Password Cracking
+  # ===========================================================================
+  hashcat-mcp:
+    build:
+      context: ./password-cracking/hashcat-mcp
+      dockerfile: Dockerfile
+    image: hashcat-mcp:latest
+    container_name: hashcat-mcp
+    ports:
+      - "3037:3000"
+    networks:
+      - mcp-network
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
 
 # =============================================================================
 # Networks

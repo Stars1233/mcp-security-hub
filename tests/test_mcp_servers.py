@@ -43,8 +43,23 @@ MCP_SERVERS = [
 MCP_WRAPPERS = [
     ("reconnaissance", "shodan-mcp"),
     ("reconnaissance", "pd-tools-mcp"),
+    ("reconnaissance", "zoomeye-mcp"),
+    ("reconnaissance", "networksdb-mcp"),
+    ("reconnaissance", "externalattacker-mcp"),
     ("web-security", "nikto-mcp"),
+    ("web-security", "burp-mcp"),
     ("binary-analysis", "radare2-mcp"),
+    ("binary-analysis", "ghidra-mcp"),
+    ("binary-analysis", "ida-mcp"),
+    ("cloud-security", "roadrecon-mcp"),
+    ("code-security", "semgrep-mcp"),
+    ("osint", "maigret-mcp"),
+    ("osint", "dnstwist-mcp"),
+    ("threat-intel", "virustotal-mcp"),
+    ("threat-intel", "otx-mcp"),
+    ("active-directory", "bloodhound-mcp"),
+    ("password-cracking", "hashcat-mcp"),
+    ("meta", "mcp-scan"),
 ]
 
 # All MCPs (for file existence tests)

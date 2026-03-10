@@ -17,26 +17,58 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 MCPS=(
+    # Reconnaissance
     "reconnaissance/nmap-mcp"
     "reconnaissance/shodan-mcp"
     "reconnaissance/pd-tools-mcp"
     "reconnaissance/whatweb-mcp"
     "reconnaissance/masscan-mcp"
+    "reconnaissance/zoomeye-mcp"
+    "reconnaissance/networksdb-mcp"
+    "reconnaissance/externalattacker-mcp"
+    # Web Security
     "web-security/nuclei-mcp"
     "web-security/sqlmap-mcp"
     "web-security/nikto-mcp"
     "web-security/ffuf-mcp"
-    "binary-analysis/radare2-mcp"
+    "web-security/waybackurls-mcp"
+    "web-security/burp-mcp"
+    # Binary Analysis
     "binary-analysis/binwalk-mcp"
     "binary-analysis/yara-mcp"
     "binary-analysis/capa-mcp"
+    "binary-analysis/radare2-mcp"
+    "binary-analysis/ghidra-mcp"
+    "binary-analysis/ida-mcp"
+    # Blockchain Security
+    "blockchain/daml-viewer-mcp"
+    "blockchain/medusa-mcp"
+    "blockchain/solazy-mcp"
+    # Cloud Security
     "cloud-security/trivy-mcp"
     "cloud-security/prowler-mcp"
+    "cloud-security/roadrecon-mcp"
+    # Secrets Detection
+    "secrets/gitleaks-mcp"
+    # Exploitation
     "exploitation/searchsploit-mcp"
-    "blockchain/daml-viewer-mcp"
-    "blockchain/solazy-mcp",
-    "fuzzing/dharma-mcp",
+    # Fuzzing
     "fuzzing/boofuzz-mcp"
+    "fuzzing/dharma-mcp"
+    # OSINT
+    "osint/maigret-mcp"
+    "osint/dnstwist-mcp"
+    # Threat Intelligence
+    "threat-intel/virustotal-mcp"
+    "threat-intel/otx-mcp"
+    # Active Directory
+    "active-directory/bloodhound-mcp"
+    # Password Cracking
+    "password-cracking/hashcat-mcp"
+    # Code Security
+    "code-security/semgrep-mcp"
+    # Meta
+    "meta/mcp-scan"
 )
 
 PASSED=0

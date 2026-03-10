@@ -30,38 +30,94 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Reconnaissance
           - name: nmap-mcp
             context: ./reconnaissance/nmap-mcp
+          - name: shodan-mcp
+            context: ./reconnaissance/shodan-mcp
+          - name: pd-tools-mcp
+            context: ./reconnaissance/pd-tools-mcp
+          - name: whatweb-mcp
+            context: ./reconnaissance/whatweb-mcp
+          - name: masscan-mcp
+            context: ./reconnaissance/masscan-mcp
+          - name: zoomeye-mcp
+            context: ./reconnaissance/zoomeye-mcp
+          - name: networksdb-mcp
+            context: ./reconnaissance/networksdb-mcp
+          - name: externalattacker-mcp
+            context: ./reconnaissance/externalattacker-mcp
+          # Web Security
           - name: nuclei-mcp
             context: ./web-security/nuclei-mcp
           - name: sqlmap-mcp
             context: ./web-security/sqlmap-mcp
+          - name: nikto-mcp
+            context: ./web-security/nikto-mcp
+          - name: ffuf-mcp
+            context: ./web-security/ffuf-mcp
+          - name: waybackurls-mcp
+            context: ./web-security/waybackurls-mcp
+          - name: burp-mcp
+            context: ./web-security/burp-mcp
+          # Binary Analysis
           - name: binwalk-mcp
             context: ./binary-analysis/binwalk-mcp
           - name: yara-mcp
             context: ./binary-analysis/yara-mcp
           - name: capa-mcp
             context: ./binary-analysis/capa-mcp
-          - name: ffuf-mcp
-            context: ./web-security/ffuf-mcp
-          - name: whatweb-mcp
-            context: ./reconnaissance/whatweb-mcp
-          - name: masscan-mcp
-            context: ./reconnaissance/masscan-mcp
+          - name: radare2-mcp
+            context: ./binary-analysis/radare2-mcp
+          - name: ghidra-mcp
+            context: ./binary-analysis/ghidra-mcp
+          - name: ida-mcp
+            context: ./binary-analysis/ida-mcp
+          # Blockchain Security
+          - name: daml-viewer-mcp
+            context: ./blockchain/daml-viewer-mcp
+          - name: medusa-mcp
+            context: ./blockchain/medusa-mcp
+          - name: solazy-mcp
+            context: ./blockchain/solazy-mcp
+          # Cloud Security
+          - name: trivy-mcp
+            context: ./cloud-security/trivy-mcp
           - name: prowler-mcp
             context: ./cloud-security/prowler-mcp
-          - name: searchsploit-mcp
-            context: ./exploitation/searchsploit-mcp
-          - name: gitleaks-mcp
-            context: ./secrets/gitleaks-mcp
-          - name: semgrep-mcp
-            context: ./code-security/semgrep-mcp
-          - name: networksdb-mcp
-            context: ./reconnaissance/networksdb-mcp
-          - name: externalattacker-mcp
-            context: ./reconnaissance/externalattacker-mcp
           - name: roadrecon-mcp
             context: ./cloud-security/roadrecon-mcp
+          # Secrets Detection
+          - name: gitleaks-mcp
+            context: ./secrets/gitleaks-mcp
+          # Exploitation
+          - name: searchsploit-mcp
+            context: ./exploitation/searchsploit-mcp
+          # Fuzzing
+          - name: boofuzz-mcp
+            context: ./fuzzing/boofuzz-mcp
+          - name: dharma-mcp
+            context: ./fuzzing/dharma-mcp
+          # OSINT
+          - name: maigret-mcp
+            context: ./osint/maigret-mcp
+          - name: dnstwist-mcp
+            context: ./osint/dnstwist-mcp
+          # Threat Intelligence
+          - name: virustotal-mcp
+            context: ./threat-intel/virustotal-mcp
+          - name: otx-mcp
+            context: ./threat-intel/otx-mcp
+          # Active Directory
+          - name: bloodhound-mcp
+            context: ./active-directory/bloodhound-mcp
+          # Password Cracking
+          - name: hashcat-mcp
+            context: ./password-cracking/hashcat-mcp
+          # Code Security
+          - name: semgrep-mcp
+            context: ./code-security/semgrep-mcp
+          # Meta
           - name: mcp-scan
             context: ./meta/mcp-scan
 

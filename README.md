@@ -8,15 +8,15 @@
 Production-ready, Dockerized MCP (Model Context Protocol) servers for offensive security tools. Enable AI assistants like Claude to perform security assessments, vulnerability scanning, and binary analysis.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/MCPs-36-brightgreen" alt="36 MCPs"/>
-  <img src="https://img.shields.io/badge/Tools-185+-orange" alt="185+ Tools"/>
+  <img src="https://img.shields.io/badge/MCPs-38-brightgreen" alt="38 MCPs"/>
+  <img src="https://img.shields.io/badge/Tools-300+-orange" alt="300+ Tools"/>
   <img src="https://img.shields.io/badge/Docker-Ready-blue" alt="Docker Ready"/>
 </p>
 
 ## Features
 
-- **36 MCP Servers** covering reconnaissance, web security, binary analysis, blockchain security, cloud security, code security, secrets detection, threat intelligence, OSINT, Active Directory, and more
-- **175+ Security Tools** accessible via natural language through Claude or other MCP clients
+- **38 MCP Servers** covering reconnaissance, web security, binary analysis, blockchain security, cloud security, code security, secrets detection, threat intelligence, OSINT, Active Directory, fuzzing, and more
+- **300+ Security Tools** accessible via natural language through Claude or other MCP clients
 - **Production Hardened** - Non-root containers, minimal images, Trivy-scanned
 - **Docker Compose** orchestration for multi-tool workflows
 - **CI/CD Ready** with GitHub Actions for automated builds and security scanning
@@ -138,11 +138,12 @@ For project-level config, copy `.mcp.json` to your project root. See [examples/]
 |--------|-------|-------------|
 | [searchsploit-mcp](./exploitation/searchsploit-mcp) | 5 | Exploit-DB search and retrieval |
 
-### Fuzzing (2 server)
-   Server | Tools | Description |
- |--------|-------|-------------|
- | [boofuzz-mcp](./fuzzing/boofuzz-mcp) | 4 | Network protocol fuzzing using Boofuzz |
- | [dharma-mcp](./fuzzing/dharma-mcp) | 2 | Grammar-based test case generation |
+### Fuzzing (2 servers)
+
+| Server | Tools | Description |
+|--------|-------|-------------|
+| [boofuzz-mcp](./fuzzing/boofuzz-mcp) | 4 | Network protocol fuzzing using Boofuzz |
+| [dharma-mcp](./fuzzing/dharma-mcp) | 2 | Grammar-based test case generation |
 
 ### OSINT (2 servers)
 
